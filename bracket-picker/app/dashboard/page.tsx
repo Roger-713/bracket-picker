@@ -15,6 +15,7 @@ type Match = {
 type Prediction = {
   id: string;
   user_id: string;
+  match_id: string;
   points_awarded: number | null;
 };
 
@@ -125,7 +126,7 @@ export default function DashboardPage() {
 
       const { data: predictions, error: predictionError } = await supabase
         .from("predictions")
-        .select("id, user_id, points_awarded")
+        .select("id, user_id, match_id, points_awarded")
         .eq("league_id", leagueId);
 
       if (predictionError) {
@@ -150,12 +151,22 @@ export default function DashboardPage() {
         Math.max((matches || []).length - userPredictions.length, 0),
       );
 
-      const upcomingMatch =
-        (matches || []).find(
-          (match) => new Date(match.start_time) > new Date(),
-        ) || null;
+      const pickedMatchIds = new Set(
+        userPredictions.map((prediction) => prediction.id),
+      );
 
-      setNextMatch(upcomingMatch);
+      const upcomingUnpickedMatch =
+        (matches || []).find((match) => {
+          const matchHasNotStarted = new Date(match.start_time) > new Date();
+
+          const userHasAlreadyPicked = userPredictions.some(
+            (prediction) => prediction.match_id === match.id,
+          );
+
+          return matchHasNotStarted && !userHasAlreadyPicked;
+        }) || null;
+
+      setNextMatch(upcomingUnpickedMatch);
 
       const leaderboardMap = new Map<string, LeaderboardPlayer>();
 
@@ -309,7 +320,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="bg-white/10 border border-white/20 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold mb-2">Next Match</h2>
+          <h2 className="text-2xl font-bold mb-2">Next Pick Needed</h2>
 
           {nextMatch ? (
             <>
@@ -322,7 +333,9 @@ export default function DashboardPage() {
               </p>
             </>
           ) : (
-            <p className="text-green-100">No upcoming matches found.</p>
+            <p className="text-green-100">
+              You have picked all upcoming matches.
+            </p>
           )}
         </div>
       </div>
