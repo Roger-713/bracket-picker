@@ -324,17 +324,54 @@ export default function AdminPage() {
         <div className="bg-white/10 border border-white/20 rounded-2xl p-6 mb-6">
           <h2 className="text-2xl font-bold mb-2">Admin Tools</h2>
           <p className="text-green-100 mb-4">
-            Use this if you edited match scores and need to refresh the
-            leaderboard.
+            Manage results, match details, bracket updates, payments, and
+            leaderboard scoring.
           </p>
 
-          <button
-            type="button"
-            onClick={recalculateAllPoints}
-            className="bg-white text-green-950 px-6 py-3 rounded-xl font-semibold"
-          >
-            Recalculate All Points
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={recalculateAllPoints}
+              className="bg-white text-green-950 px-6 py-3 rounded-xl font-semibold"
+            >
+              Recalculate All Points
+            </button>
+
+            <a
+              href="/admin/matches"
+              className="border border-white px-6 py-3 rounded-xl font-semibold"
+            >
+              Edit Matches
+            </a>
+
+            <a
+              href="/admin/bracket"
+              className="border border-white px-6 py-3 rounded-xl font-semibold"
+            >
+              Edit Bracket
+            </a>
+
+            <a
+              href="/payment"
+              className="border border-white px-6 py-3 rounded-xl font-semibold"
+            >
+              Manage Payments
+            </a>
+
+            <a
+              href="/groups"
+              className="border border-white px-6 py-3 rounded-xl font-semibold"
+            >
+              View Groups
+            </a>
+
+            <a
+              href="/leaderboard"
+              className="border border-white px-6 py-3 rounded-xl font-semibold"
+            >
+              View Leaderboard
+            </a>
+          </div>
         </div>
 
         <div className="space-y-4">
