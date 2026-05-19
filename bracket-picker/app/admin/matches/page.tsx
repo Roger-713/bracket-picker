@@ -40,6 +40,7 @@ export default function AdminMatchesPage() {
   const [forms, setForms] = useState<Record<string, MatchForm>>({});
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     async function checkAdminAndLoad() {
@@ -409,6 +410,18 @@ export default function AdminMatchesPage() {
     );
   }
 
+  const filteredMatches = matches.filter((match) => {
+    if (filter === "all") return true;
+    if (filter === "scheduled") return match.status === "scheduled";
+    if (filter === "live") return match.status === "live";
+    if (filter === "finished") return match.status === "finished";
+    if (filter === "group-stage") return match.stage === "Group Stage";
+    if (filter === "knockout") return match.stage === "Knockout";
+    if (filter === "final") return match.round === "Final";
+
+    return true;
+  });
+
   return (
     <main className="min-h-screen bg-green-950 text-white p-6">
       <div className="max-w-6xl mx-auto">
@@ -440,8 +453,44 @@ export default function AdminMatchesPage() {
           </div>
         </div>
 
+        <div className="bg-white/10 border border-white/20 rounded-2xl p-4 mb-6">
+          <p className="text-green-100 mb-3">Filter matches</p>
+
+          <div className="flex flex-wrap gap-3">
+            {[
+              { label: "All", value: "all" },
+              { label: "Scheduled", value: "scheduled" },
+              { label: "Live", value: "live" },
+              { label: "Finished", value: "finished" },
+              { label: "Group Stage", value: "group-stage" },
+              { label: "Knockout", value: "knockout" },
+              { label: "Final", value: "final" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setFilter(option.value)}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm ${
+                  filter === option.value
+                    ? "bg-white text-green-950"
+                    : "border border-white text-white"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="space-y-6">
-          {matches.map((match) => {
+          {filteredMatches.length === 0 && (
+            <div className="bg-white/10 border border-white/20 rounded-2xl p-6">
+              <p className="text-green-100">
+                No matches found for this filter.
+              </p>
+            </div>
+          )}
+          {filteredMatches.map((match) => {
             const form = forms[match.id];
 
             return (
