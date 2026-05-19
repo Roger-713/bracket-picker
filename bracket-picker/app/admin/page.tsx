@@ -215,6 +215,83 @@ export default function AdminPage() {
     getMatches();
   }
 
+  async function recalculateAllPoints() {
+    const { data: finishedMatches, error: matchError } = await supabase
+      .from("matches")
+      .select("*")
+      .eq("status", "finished");
+
+    if (matchError) {
+      console.error(matchError);
+      alert(matchError.message);
+      return;
+    }
+
+    if (!finishedMatches || finishedMatches.length === 0) {
+      alert("No finished matches found.");
+      return;
+    }
+
+    for (const match of finishedMatches) {
+      if (
+        match.home_score === null ||
+        match.away_score === null ||
+        !match.winner
+      ) {
+        continue;
+      }
+
+      const finalMatch = isFinalMatch(match.round);
+
+      const { data: predictions, error: predictionError } = await supabase
+        .from("predictions")
+        .select("id, picked_winner, predicted_home_score, predicted_away_score")
+        .eq("match_id", match.id);
+
+      if (predictionError) {
+        console.error(predictionError);
+        alert(predictionError.message);
+        return;
+      }
+
+      for (const prediction of predictions || []) {
+        const points = prediction.picked_winner === match.winner ? 1 : 0;
+
+        let exactScoreCorrect = false;
+        let scoreError: number | null = null;
+
+        if (finalMatch) {
+          exactScoreCorrect =
+            prediction.predicted_home_score === match.home_score &&
+            prediction.predicted_away_score === match.away_score;
+
+          scoreError = getScoreError(
+            prediction,
+            match.home_score,
+            match.away_score,
+          );
+        }
+
+        const { error: updateError } = await supabase
+          .from("predictions")
+          .update({
+            points_awarded: points,
+            exact_score_correct: exactScoreCorrect,
+            score_error: scoreError,
+          })
+          .eq("id", prediction.id);
+
+        if (updateError) {
+          console.error(updateError);
+          alert(updateError.message);
+          return;
+        }
+      }
+    }
+
+    alert("All points recalculated!");
+  }
+
   if (loading) {
     return (
       <main className="min-h-screen bg-green-950 text-white flex items-center justify-center">
@@ -243,6 +320,22 @@ export default function AdminPage() {
         <p className="text-green-100 mb-6">
           Enter final scores to update match results and leaderboard points.
         </p>
+
+        <div className="bg-white/10 border border-white/20 rounded-2xl p-6 mb-6">
+          <h2 className="text-2xl font-bold mb-2">Admin Tools</h2>
+          <p className="text-green-100 mb-4">
+            Use this if you edited match scores and need to refresh the
+            leaderboard.
+          </p>
+
+          <button
+            type="button"
+            onClick={recalculateAllPoints}
+            className="bg-white text-green-950 px-6 py-3 rounded-xl font-semibold"
+          >
+            Recalculate All Points
+          </button>
+        </div>
 
         <div className="space-y-4">
           {matches.map((match) => {
