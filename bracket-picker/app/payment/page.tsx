@@ -476,10 +476,18 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        <p className="text-sm text-green-100 mt-4">
-          Payments are tracked manually. Do not use this as automatic payment
-          processing.
-        </p>
+        <div className="bg-yellow-300/10 border border-yellow-300/30 rounded-2xl p-5 mt-6">
+          <h2 className="text-lg font-bold text-yellow-100 mb-2">
+            Payment Disclaimer
+          </h2>
+
+          <p className="text-sm text-yellow-50 leading-relaxed">
+            Payments are not processed through this website. This page is only
+            used by the league admin to manually track who has paid outside the
+            app. The prize pool shown is based only on payments marked as
+            confirmed by the admin.
+          </p>
+        </div>
       </div>
     </main>
   );

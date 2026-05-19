@@ -44,6 +44,10 @@ export default function RulesPage() {
           <section className="bg-white/10 border border-white/20 rounded-2xl p-6">
             <h2 className="text-2xl font-bold mb-3">Prize Pool</h2>
             <ul className="list-disc list-inside space-y-2 text-green-100">
+              <li>
+                Payments are handled outside the website and manually confirmed
+                by the admin.
+              </li>
               <li>Entry fees are tracked manually by the league admin.</li>
               <li>The prize pool only includes confirmed paid players.</li>
               <li>
@@ -57,8 +61,9 @@ export default function RulesPage() {
           <section className="bg-white/10 border border-white/20 rounded-2xl p-6">
             <h2 className="text-2xl font-bold mb-3">Important Note</h2>
             <p className="text-green-100">
-              This site tracks a private friend league manually. Payments are
-              not processed through the website.
+              This site is for tracking a private friend league. Payments are
+              not processed through the website, and all payment confirmations
+              are handled manually by the league admin.
             </p>
           </section>
         </div>

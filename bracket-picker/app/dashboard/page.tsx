@@ -331,6 +331,12 @@ export default function DashboardPage() {
               <p className="text-xl font-semibold">
                 {nextMatch.home_team} vs {nextMatch.away_team}
               </p>
+              <a
+                href="/picks"
+                className="inline-block bg-white text-green-950 px-5 py-3 rounded-xl font-semibold mt-4"
+              >
+                Make This Pick
+              </a>
             </>
           ) : (
             <p className="text-green-100">
