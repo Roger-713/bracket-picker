@@ -19,6 +19,7 @@ export default function ProfilePage() {
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState<Profile | null>(null);
   const [activeLeague, setActiveLeague] = useState<League | null>(null);
+  const [usernameInput, setUsernameInput] = useState("");
 
   useEffect(() => {
     async function loadProfile() {
@@ -43,6 +44,7 @@ export default function ProfilePage() {
         console.error(profileError);
       } else {
         setProfile(profileData);
+        setUsernameInput(profileData.username || "");
       }
 
       const activeLeagueId = localStorage.getItem("activeLeagueId");
@@ -67,6 +69,41 @@ export default function ProfilePage() {
     loadProfile();
   }, []);
 
+  async function updateUsername() {
+    if (!usernameInput.trim()) {
+      alert("Username cannot be empty.");
+      return;
+    }
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        username: usernameInput.trim(),
+      })
+      .eq("id", user.id);
+
+    if (error) {
+      console.error(error);
+      alert(error.message);
+      return;
+    }
+
+    alert("Username updated!");
+    setProfile({
+      id: user.id,
+      username: usernameInput.trim(),
+    });
+  }
+
   if (loading) {
     return (
       <main className="min-h-screen bg-green-950 text-white flex items-center justify-center">
@@ -87,13 +124,26 @@ export default function ProfilePage() {
           <div className="bg-white/10 border border-white/20 rounded-2xl p-6">
             <h2 className="text-2xl font-bold mb-4">Account</h2>
 
-            <div className="space-y-3 text-green-100">
-              <p>
-                <span className="font-semibold text-white">Username:</span>{" "}
-                {profile?.username || "No username"}
-              </p>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm text-green-100">Username</label>
+                <input
+                  className="w-full rounded-xl px-4 py-3 text-black mt-1"
+                  value={usernameInput}
+                  onChange={(e) => setUsernameInput(e.target.value)}
+                  placeholder="Username"
+                />
+              </div>
 
-              <p>
+              <button
+                type="button"
+                onClick={updateUsername}
+                className="bg-white text-green-950 px-5 py-3 rounded-xl font-semibold"
+              >
+                Update Username
+              </button>
+
+              <p className="text-green-100">
                 <span className="font-semibold text-white">Email:</span> {email}
               </p>
             </div>

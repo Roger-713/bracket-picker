@@ -260,56 +260,56 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        <div className="bg-white/10 border border-white/20 rounded-2xl p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
+
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="/rules"
+              className="border border-white px-5 py-3 rounded-xl font-semibold"
+            >
+              View Rules
+            </a>
+
+            <a
+              href="/picks"
+              className="border border-white px-5 py-3 rounded-xl font-semibold"
+            >
+              Make Picks
+            </a>
+
+            <a
+              href="/leaderboard"
+              className="border border-white px-5 py-3 rounded-xl font-semibold"
+            >
+              View Leaderboard
+            </a>
+
+            <a
+              href="/payment"
+              className="border border-white px-5 py-3 rounded-xl font-semibold"
+            >
+              View Payment
+            </a>
+
+            <a
+              href="/schedule"
+              className="border border-white px-5 py-3 rounded-xl font-semibold"
+            >
+              View Schedule
+            </a>
+
+            <a
+              href="/league"
+              className="border border-white px-5 py-3 rounded-xl font-semibold"
+            >
+              Change League
+            </a>
+          </div>
+        </div>
+
         <div className="bg-white/10 border border-white/20 rounded-2xl p-6">
           <h2 className="text-2xl font-bold mb-2">Next Match</h2>
-
-          <div className="bg-white/10 border border-white/20 rounded-2xl p-6 mb-8">
-            <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
-
-            <div className="flex flex-wrap gap-3">
-              <a
-                href="/rules"
-                className="border border-white px-5 py-3 rounded-xl font-semibold"
-              >
-                View Rules
-              </a>
-
-              <a
-                href="/picks"
-                className="bg-white text-green-950 px-5 py-3 rounded-xl font-semibold"
-              >
-                Make Picks
-              </a>
-
-              <a
-                href="/leaderboard"
-                className="border border-white px-5 py-3 rounded-xl font-semibold"
-              >
-                View Leaderboard
-              </a>
-
-              <a
-                href="/payment"
-                className="border border-white px-5 py-3 rounded-xl font-semibold"
-              >
-                View Payment
-              </a>
-
-              <a
-                href="/schedule"
-                className="border border-white px-5 py-3 rounded-xl font-semibold"
-              >
-                View Schedule
-              </a>
-
-              <a
-                href="/league"
-                className="border border-white px-5 py-3 rounded-xl font-semibold"
-              >
-                Change League
-              </a>
-            </div>
-          </div>
 
           {nextMatch ? (
             <>
