@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [activeLeague, setActiveLeague] = useState<League | null>(null);
   const [usernameInput, setUsernameInput] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     async function loadProfile() {
@@ -97,7 +98,8 @@ export default function ProfilePage() {
       return;
     }
 
-    alert("Username updated!");
+    setMessage("Username updated!");
+    setTimeout(() => setMessage(""), 3000);
     setProfile({
       id: user.id,
       username: usernameInput.trim(),
@@ -119,6 +121,12 @@ export default function ProfilePage() {
         <p className="text-green-100 mb-8">
           View your account and current league info.
         </p>
+
+        {message && (
+          <div className="bg-green-400 text-green-950 rounded-2xl p-4 mb-6 font-semibold">
+            {message}
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-4">
           <div className="bg-white/10 border border-white/20 rounded-2xl p-6">

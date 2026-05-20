@@ -30,6 +30,7 @@ export default function PicksPage() {
   const [loading, setLoading] = useState(true);
   const [picks, setPicks] = useState<Record<string, PickForm>>({});
   const [leagueId, setLeagueId] = useState<string | null>(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     async function loadPageData() {
@@ -243,7 +244,8 @@ export default function PicksPage() {
       console.error("Save pick error:", error);
       alert(error.message);
     } else {
-      alert("Pick saved!");
+      setMessage("Pick saved!");
+      setTimeout(() => setMessage(""), 3000);
     }
   }
 
@@ -259,6 +261,11 @@ export default function PicksPage() {
     <main className="min-h-screen bg-green-950 text-white p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl font-bold mb-6">Make Your Picks</h1>
+        {message && (
+          <div className="bg-green-400 text-green-950 rounded-2xl p-4 mb-6 font-semibold">
+            {message}
+          </div>
+        )}
 
         <div className="space-y-4">
           {matches.length === 0 && (

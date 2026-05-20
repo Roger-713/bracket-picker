@@ -41,6 +41,7 @@ export default function PaymentPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [entryFeeInput, setEntryFeeInput] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("manual");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     async function loadPaymentPage() {
@@ -179,6 +180,11 @@ export default function PaymentPage() {
     loadPaymentPage();
   }, []);
 
+  function showMessage(text: string) {
+    setMessage(text);
+    setTimeout(() => setMessage(""), 3000);
+  }
+
   async function markAsPaid(userId: string) {
     if (!league) {
       alert("League not loaded.");
@@ -217,8 +223,10 @@ export default function PaymentPage() {
       return;
     }
 
-    alert("Payment marked as paid.");
-    window.location.reload();
+    showMessage("Payment marked as paid.");
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   }
 
   async function markAsUnpaid(userId: string) {
@@ -257,8 +265,10 @@ export default function PaymentPage() {
       return;
     }
 
-    alert("Payment marked as unpaid.");
-    window.location.reload();
+    showMessage("Payment marked as unpaid.");
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   }
 
   async function updateEntryFee() {
@@ -296,8 +306,10 @@ export default function PaymentPage() {
       return;
     }
 
-    alert("Entry fee updated!");
-    window.location.reload();
+    showMessage("Entry fee updated!");
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   }
 
   if (loading) {
@@ -321,6 +333,12 @@ export default function PaymentPage() {
         <h1 className="text-4xl font-bold mb-2">Payment</h1>
 
         {league && <p className="text-green-100 mb-6">League: {league.name}</p>}
+
+        {message && (
+          <div className="bg-green-400 text-green-950 rounded-2xl p-4 mb-6 font-semibold">
+            {message}
+          </div>
+        )}
 
         {isAdmin && league && (
           <div className="bg-white/10 border border-white/20 rounded-2xl p-6 mb-8">
