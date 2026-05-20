@@ -32,6 +32,12 @@ export default function AdminPage() {
   const [scores, setScores] = useState<Record<string, ScoreForm>>({});
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [message, setMessage] = useState("");
+
+  function showMessage(text: string) {
+    setMessage(text);
+    setTimeout(() => setMessage(""), 3000);
+  }
 
   useEffect(() => {
     async function checkAdminAndLoad() {
@@ -211,7 +217,7 @@ export default function AdminPage() {
       }
     }
 
-    alert("Result saved and points updated!");
+    showMessage("Result saved and points updated!");
     getMatches();
   }
 
@@ -289,7 +295,7 @@ export default function AdminPage() {
       }
     }
 
-    alert("All points recalculated!");
+    showMessage("All points recalculated!");
   }
 
   if (loading) {
@@ -320,6 +326,17 @@ export default function AdminPage() {
         <p className="text-green-100 mb-6">
           Enter final scores to update match results and leaderboard points.
         </p>
+
+        <h1 className="text-4xl font-bold mb-2">Admin</h1>
+        <p className="text-green-100 mb-6">
+          Enter final scores to update match results and leaderboard points.
+        </p>
+
+        {message && (
+          <div className="bg-green-400 text-green-950 rounded-2xl p-4 mb-6 font-semibold">
+            {message}
+          </div>
+        )}
 
         <div className="bg-white/10 border border-white/20 rounded-2xl p-6 mb-6">
           <h2 className="text-2xl font-bold mb-2">Admin Tools</h2>
